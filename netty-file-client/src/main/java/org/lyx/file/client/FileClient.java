@@ -4,7 +4,7 @@
  * 文件名称: UploadClient.java
  * 修订记录：
  * No    日期				作者(操作:具体内容)
- * 1.    2013-4-12			liuyuanxian(创建:创建文件)
+ * 1.    2017-08-29			liuyuanxian(创建:创建文件)
  *====================================================
  * 类描述：(说明未实现或其它不应生成javadoc的内容)
  * 
@@ -91,22 +91,31 @@ public class FileClient {
 	private static void uploadFile(ClientBootstrap bootstrap, String host,
 			int port, File file, String fileName, String thumbMark,
 			String userName, String pwd) {
+		//1.构建uri对象
 		URI uri = getUri(host, port);
+		//2.连接netty服务端
 		ChannelFuture future = bootstrap.connect(new InetSocketAddress(host,
 				port));
+		//3.异步获取Channel对象
 		Channel channel = future.awaitUninterruptibly().getChannel();
 		if (!future.isSuccess()) {
 			future.getCause().printStackTrace();
 			bootstrap.releaseExternalResources();
 			return;
 		}
+		//4.初始化文件上传句柄对象
 		WrapFileClientHandler handler = new UploadFileClientHandler(host, uri,
 				file, fileName, thumbMark, userName, pwd);
+		//5.获取Request对象
 		HttpRequest request = handler.getRequest();
+		//6.获取Http数据处理工厂
 		HttpDataFactory factory = getHttpDataFactory();
+		//7.进行数据的包装处理，主要是进行上传文件所需要的参数的设置，此时调用的句柄是具体的UploadFileClientHandler对象
 		HttpPostRequestEncoder bodyRequestEncoder = handler
 				.wrapRequestData(factory);
+		//8.把request写到管道中，传输给服务端
 		channel.write(request);
+		//9.做一些关闭资源的动作
 		if (bodyRequestEncoder.isChunked()) {
 			channel.write(bodyRequestEncoder).awaitUninterruptibly();
 		}
@@ -127,11 +136,13 @@ public class FileClient {
 	public static String uploadFile(File file, String fileName,
 			boolean thumbMark) {
 		FileClientPipelineFactory clientPipelineFactory = new FileClientPipelineFactory();
+		//辅助类。用于帮助我们创建NETTY服务
 		ClientBootstrap bootstrap = createClientBootstrap(clientPipelineFactory);
 		String strThumbMark = Constants.THUMB_MARK_NO;
 		if (thumbMark) {
 			strThumbMark = Constants.THUMB_MARK_YES;
 		}
+		//具体处理上传文件逻辑
 		uploadFile(bootstrap, FileClientContainer.getHost(),
 				FileClientContainer.getPort(), file, fileName, strThumbMark,
 				FileClientContainer.getUserName(),

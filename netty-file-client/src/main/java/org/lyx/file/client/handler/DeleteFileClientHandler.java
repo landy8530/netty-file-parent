@@ -4,7 +4,7 @@
  * 文件名称: DeleteFileClientHandler.java
  * 修订记录：
  * No    日期				作者(操作:具体内容)
- * 1.    2013-4-12			liuyuanxian(创建:创建文件)
+ * 1.    2017-08-29			liuyuanxian(创建:创建文件)
  *====================================================
  * 类描述：(说明未实现或其它不应生成javadoc的内容)
  * 
@@ -50,10 +50,14 @@ public class DeleteFileClientHandler extends WrapFileClientHandler {
 			e.printStackTrace();
 		}
 		try {
+			//设置请求方式
 			bodyRequestEncoder.addBodyAttribute("getform", "POST");
+			//设置文件操作类型
 			bodyRequestEncoder.addBodyAttribute(Constants.ACTION_KEY,
 					EnumUploadAction.DELETE_FILE.getValue());
+			//设置文件路径
 			bodyRequestEncoder.addBodyAttribute(Constants.FILE_PATH_KEY, this.filePath);
+			//鉴权
 			bodyRequestEncoder
 					.addBodyAttribute(Constants.USER_NAME_KEY, super.getUserName());
 			bodyRequestEncoder.addBodyAttribute(Constants.PWD_KEY, super.getPwd());
