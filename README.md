@@ -4,13 +4,18 @@
 该组件的代码结构分为两部分，客户端组件（netty-flie-client）和服务端组件（netty-flie-server）。
 
 # 2.netty-file-client
+
 2.1 概述
+
 客户端组件主要提供对外访问服务端组件的接口，提供以下接口：文件上传，文件替换，文件删除，如果是图片的话，还可以生成缩略图等功能。
+
 org.lyx.file.client包是该组件的核心包，FileClient类是对外提供接口的工具类。具有以下方法：
-1.uploadFile 文件上传，对应文件处理句柄类为：UploadFileClientHandler
-2.deleteFile 删除服务端文件，对应文件处理句柄类为：DeleteFileClientHandler
-3.replaceFile 替换服务端文件，对应文件处理句柄类为：ReplaceFileClientHandler
-4.createThumbPicture 生成缩略图，对应文件处理句柄类为：CreateThumbPictureClientHandler
+
+1. uploadFile 文件上传，对应文件处理句柄类为：UploadFileClientHandler
+2. deleteFile 删除服务端文件，对应文件处理句柄类为：DeleteFileClientHandler
+3. replaceFile 替换服务端文件，对应文件处理句柄类为：ReplaceFileClientHandler
+4. createThumbPicture 生成缩略图，对应文件处理句柄类为：CreateThumbPictureClientHandler
+
 
 以上所有句柄类的父类均为UploadFileClientHandler，该类实现了一些共有方法，比如一些公共参数的包装等。
 
@@ -89,24 +94,15 @@ org.lyx.file.client包是该组件的核心包，FileClient类是对外提供接
     }
 ```    
 主要有以下实现步骤：
-
-1.构建uri对象
-
-2.连接netty服务端
-
-3.异步获取Channel对象
-
-4.初始化文件上传句柄对象
-
-5.获取Request对象
-
-6.获取Http数据处理工厂
-
-7.进行数据的包装处理，主要是进行上传文件所需要的参数的设置，此时调用的句柄是具体的UploadFileClientHandler对象
-
-8.把request写到管道中，传输给服务端
-
-9.做一些关闭资源的动作
+1. 构建uri对象
+2. 连接netty服务端
+3. 异步获取Channel对象
+4. 初始化文件上传句柄对象
+5. 获取Request对象
+6. 获取Http数据处理工厂
+7. 进行数据的包装处理，主要是进行上传文件所需要的参数的设置，此时调用的句柄是具体的UploadFileClientHandler对象
+8. 把request写到管道中，传输给服务端
+9. 做一些关闭资源的动作
 
 # 3.netty-file-server
 3.1 概述
