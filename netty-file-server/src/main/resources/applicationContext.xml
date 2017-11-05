@@ -12,11 +12,12 @@
             http://www.springframework.org/schema/context 
             http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	default-autowire="byName">
-
+	<!-- 以下账户配置为客户端上传下载需要做的一个权限认证操作，需要在客户端进行配置 -->
 	<bean id="accountYt" class="org.lyx.file.Account">
 		<property name="userName" value="yt"></property>
 		<property name="pwd" value="yt"></property>
 		<!-- <property name="rootPath" value="/usr/local/apache-tomcat-6.0.20/webapps/srtp/pics"></property> -->
+		<!-- 上传文件的根目录,实际工作环境按照实际情况更改即可 -->
 		<property name="rootPath" value="D:/tmp/up"></property>
 		<property name="level" value="1"></property>
 		<property name="thumbHeight" value="100"></property>
@@ -26,6 +27,7 @@
 		<property name="userName" value="yt0"></property>
 		<property name="pwd" value="yt0"></property>
 		<!-- <property name="rootPath" value="/usr/local/apache-tomcat-6.0.20/webapps/srtp/pics"></property> -->
+		<!-- 上传文件的根目录,实际工作环境按照实际情况更改即可 -->
 		<property name="rootPath" value="D:/tmp/up"></property>
 		<property name="level" value="1"></property>
 		<property name="thumbHeight" value="100"></property>

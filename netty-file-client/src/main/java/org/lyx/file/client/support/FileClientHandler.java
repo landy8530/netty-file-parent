@@ -1,5 +1,5 @@
 /**
- * 版权所有：福建邮科电信业务部厦门研发中心 
+ * 版权所有：蚂蚁与咖啡的故事
  *====================================================
  * 文件名称: UploadClientHandle.java
  * 修订记录：
@@ -11,8 +11,7 @@
  */
 package org.lyx.file.client.support;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ExceptionEvent;
@@ -23,10 +22,24 @@ import org.jboss.netty.handler.codec.http.HttpResponse;
 import org.jboss.netty.util.CharsetUtil;
 import org.lyx.file.Result;
 import org.lyx.file.client.utils.common.JSONUtil;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+/**
+ * 
+ *<pre><b><font color="blue">FileClientHandler</font></b></pre>
+ *
+ *<pre><b>客户端文件处理核心句柄</b></pre>
+ * <pre></pre>
+ * <pre>
+ * <b>--样例--</b>
+ *   FileClientHandler obj = new FileClientHandler();
+ *   obj.method();
+ * </pre>
+ * @author  <b>landyChris</b>
+ */
 public class FileClientHandler extends SimpleChannelUpstreamHandler {
-	private static final Log logger = LogFactory
-			.getLog(FileClientHandler.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(FileClientHandler.class);
+	
 	private boolean readingChunks;
 	private final StringBuilder responseContent = new StringBuilder();
 	private Result result;
@@ -35,7 +48,7 @@ public class FileClientHandler extends SimpleChannelUpstreamHandler {
 			throws Exception {
 		if (!this.readingChunks) {
 			HttpResponse response = (HttpResponse) e.getMessage();
-			logger.info("STATUS: " + response.getStatus());
+			LOGGER.info("STATUS: " + response.getStatus());
 			if ((response.getStatus().getCode() == 200)
 					&& (response.isChunked())) {
 				this.readingChunks = true;

@@ -1,5 +1,5 @@
 /**
- * 版权所有：福建邮科电信业务部厦门研发中心 
+ * 版权所有：蚂蚁与咖啡的故事
  *====================================================
  * 文件名称: UploadFileHandler.java
  * 修订记录：
@@ -19,16 +19,31 @@ import java.util.Date;
 import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.jboss.netty.handler.codec.http.multipart.FileUpload;
 import org.lyx.file.Account;
 import org.lyx.file.Constants;
 import org.lyx.file.Result;
+import org.lyx.file.server.handler.processor.AbstractFileServerHandler;
+import org.lyx.file.server.handler.processor.FileServerProcessor;
 import org.lyx.file.server.parse.RequestParam;
 import org.lyx.file.server.utils.common.ThumbUtil;
-
-public class UploadFileServerHandler extends AbstractFileServerHandler implements FileServerHandler {
-	private static Logger log = Logger.getLogger(UploadFileServerHandler.class);
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+/**
+ * 
+ *<pre><b><font color="blue">UploadFileServerHandler</font></b></pre>
+ *
+ *<pre><b>文件上传操作</b></pre>
+ * <pre></pre>
+ * <pre>
+ * <b>--样例--</b>
+ *   UploadFileServerHandler obj = new UploadFileServerHandler();
+ *   obj.method();
+ * </pre>
+ * @author  <b>landyChris</b>
+ */
+public class UploadFileServerHandler extends AbstractFileServerHandler implements FileServerProcessor {
+	private static final Logger LOGGER = LoggerFactory.getLogger(UploadFileServerHandler.class);
 	private String fileName;
 	private String dirPath;
 	private String savePath;
@@ -44,7 +59,7 @@ public class UploadFileServerHandler extends AbstractFileServerHandler implement
 		if (StringUtils.isBlank(srcFileName)) {
 			srcFileName = fileUpload.getFilename();
 		}
-		log.info("--srcFileName--" + srcFileName);
+		LOGGER.info("--srcFileName--" + srcFileName);
 
 		this.fileName = generateFileNameOfTime(srcFileName);
 		Result result = new Result();
@@ -54,7 +69,7 @@ public class UploadFileServerHandler extends AbstractFileServerHandler implement
 			boolean bool = fileUpload.renameTo(newFile);
 			result.setCode(bool);
 			result.setMsg("文件上传成功");
-			log.info("文件上传成功,保存路径为:" + getSavePath() + ",真实路径为：" + getRealPath(getSavePath()));
+			LOGGER.info("文件上传成功,保存路径为:" + getSavePath() + ",真实路径为：" + getRealPath(getSavePath()));
 			result.setFilePath(getSavePath());
 			if ((bool) && (reqParams.getThumbMark().equals(Constants.THUMB_MARK_YES))) {
 				createThumb();
@@ -64,7 +79,7 @@ public class UploadFileServerHandler extends AbstractFileServerHandler implement
 			e.printStackTrace();
 			result.setCode(false);
 			result.setMsg("存储文件报错" + e + ",acount:" + this.account);
-			log.error("存储文件报错" + e + ",acount:" + this.account);
+			LOGGER.error("存储文件报错" + e + ",acount:" + this.account);
 		}
 
 		return result;
@@ -80,11 +95,11 @@ public class UploadFileServerHandler extends AbstractFileServerHandler implement
 	}
 	
 	private void createThumb() {
-		if (log.isDebugEnabled()) {
-			log.debug("生成缩略图");
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("生成缩略图");
 		}
 		String thumbFileName = ThumbUtil.getThumbImagePath(this.fileName);
-		log.info("生成缩略图的名称为:" + thumbFileName + ",路径为:" + this.dirPath + thumbFileName);
+		LOGGER.info("生成缩略图的名称为:" + thumbFileName + ",路径为:" + this.dirPath + thumbFileName);
 		new ThumbUtil(new File(getRealSavePath()), new File(
 				this.dirPath + thumbFileName), this.account.getThumbWidth(),
 				this.account.getThumbHeight()).createThumbImage();

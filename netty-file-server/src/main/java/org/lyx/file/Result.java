@@ -1,5 +1,17 @@
 package org.lyx.file;
-
+/**
+ * 
+ *<pre><b><font color="blue">Result</font></b></pre>
+ *
+ *<pre><b>文件处理结果</b></pre>
+ * <pre></pre>
+ * <pre>
+ * <b>--样例--</b>
+ *   Result obj = new Result();
+ *   obj.method();
+ * </pre>
+ * @author  <b>landyChris</b>
+ */
 public class Result {
 	private boolean code;
 	private String msg;

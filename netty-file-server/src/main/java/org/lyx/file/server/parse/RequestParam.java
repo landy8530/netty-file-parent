@@ -1,5 +1,5 @@
 /**
- * 版权所有：福建邮科电信业务部厦门研发中心 
+ * 版权所有：蚂蚁与咖啡的故事
  *====================================================
  * 文件名称: UploadParam.java
  * 修订记录：
@@ -11,23 +11,42 @@
  */
 package org.lyx.file.server.parse;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.netty.handler.codec.http.multipart.FileUpload;
 import org.lyx.file.Constants;
-@SuppressWarnings("all")
+/**
+ *
+ *<pre><b><font color="blue">RequestParam</font></b></pre>
+ *
+ *<pre><b>请求参数</b></pre>
+ * <pre></pre>
+ * <pre>
+ * <b>--样例--</b>
+ *   RequestParam obj = new RequestParam();
+ *   obj.method();
+ * </pre>
+ * @author  <b>landyChris</b>
+ */
 public class RequestParam {
+	//文件操作类型
 	private String action;
+	//鉴权信息
 	private String userName;
 	private String pwd;
 	private Map<String, String> otherParams = new HashMap<String, String>();
-
+	//是否需要转为缩略图
 	private String thumbMark = Constants.THUMB_MARK_NO;
+	//上传的文件对象
 	private FileUpload fileUpload;
+	//上传的文件路径
 	private String filePath;
+	//上传的文件名称
 	private String fileName;
+	//上传的文件contentType
 	private String fileContentType;
 
 	public String getAction() {
@@ -80,7 +99,7 @@ public class RequestParam {
 
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("NETTY WEB Server\r\n");
+		sb.append("\r\nNETTY WEB Server\r\n");
 		sb.append("===================================\r\n");
 		sb.append("\r\n\r\n");
 		if (StringUtils.isNotBlank(getUserName())) {
@@ -98,8 +117,15 @@ public class RequestParam {
 		if (StringUtils.isNotBlank(this.fileContentType)) {
 			sb.append("fileContentType=" + getFileContentType() + "\r\n");
 		}
+		if (fileUpload != null) {
+			try {
+				sb.append("fileSize=" + fileUpload.getFile().length()/1024 + " KB \r\n");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		if (this.otherParams != null) {
-			for (Map.Entry item : this.otherParams.entrySet()) {
+			for (Map.Entry<String,String> item : this.otherParams.entrySet()) {
 				sb.append((String) item.getKey() + "="
 						+ (String) item.getValue() + "\r\n");
 			}

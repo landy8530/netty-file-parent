@@ -1,5 +1,5 @@
 /**
-* 版权所有：福建邮科电信业务部厦门研发中心 
+* 版权所有：蚂蚁与咖啡的故事
 *====================================================
 * 文件名称: Test.java
 * 修订记录：
@@ -23,8 +23,10 @@ public class Test {
 	 * @author liuyuanxian
 	 */
 	public static void main(String[] args) throws Exception {
-		FileClient.uploadFile(new File("D:\\tmp\\FUp_378131942802165004_刘渊先简历20170728.pdf"), "FUp_378131942802165004_刘渊先简历20170728.pdf.pdf",false);
-//		FileClient.replaceFile(new File("D:\\FUp_378131942802165004_刘渊先简历20170728.pdf"), "/yt/n/130527150721_6868.jpg");
+//		FileClient.uploadFile(new File("D:\\tmp\\Test.class"), "a.class",false);
+//		FileClient.uploadFile(new File("D:\\tmp\\FUp_378131942802165004_刘渊先简历20170728.pdf"), "FUp_378131942802165004_刘渊先简历20170728.pdf",false);
+		FileClient.replaceFile(new File("D:\\tmp\\FUp_378131942802165004_刘渊先简历20170728.pdf"), "yt\\k\\171105144056_7470.pdf");
+		FileClient.deleteFile("yt\\k\\171105144056_7470.pdf");
 	}
 	
 }

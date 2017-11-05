@@ -1,5 +1,5 @@
 /**
- * 版权所有：福建邮科电信业务部厦门研发中心 
+ * 版权所有：蚂蚁与咖啡的故事
  *====================================================
  * 文件名称: UploadServerHandler.java
  * 修订记录：
@@ -35,19 +35,39 @@ import org.jboss.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
 import org.jboss.netty.util.CharsetUtil;
 import org.lyx.file.Constants;
 import org.lyx.file.server.FileServerContainer;
-import org.lyx.file.server.handler.FileServerHandlerFactory;
+import org.lyx.file.server.handler.factory.FileServerHandlerFactory;
 import org.lyx.file.server.parse.RequestParam;
 import org.lyx.file.server.parse.RequestParamParser;
 import org.lyx.file.server.utils.enumobj.EnumFileAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+/**
+ * 
+ *<pre><b><font color="blue">FileServerHandler</font></b></pre>
+ *
+ *<pre><b>文件处理核心句柄类</b></pre>
+ * <pre></pre>
+ * <pre>
+ * <b>--样例--</b>
+ *   FileServerHandler obj = new FileServerHandler();
+ *   obj.method();
+ * </pre>
+ * @author  <b>landyChris</b>
+ */
 public class FileServerHandler extends SimpleChannelUpstreamHandler {
+	private static final Logger LOGGER = LoggerFactory.getLogger(FileServerHandler.class);
+	//http请求
 	private HttpRequest request;
+	//是否需要断点续传作业
 	private boolean readingChunks;
-	private final StringBuilder responseContent = new StringBuilder();
-
-	private static final HttpDataFactory factory = new DefaultHttpDataFactory(
-			16384L);
+	//接收到的文件内容
+	private final StringBuffer responseContent = new StringBuffer();
+	//解析收到的文件
+	private static final HttpDataFactory factory = new DefaultHttpDataFactory(DefaultHttpDataFactory.MINSIZE); //16384L
+	//post请求的解码类,它负责把字节解码成Http请求。
 	private HttpPostRequestDecoder decoder;
+	//请求参数
 	private RequestParam requestParams = new RequestParam();
 
 	public void channelClosed(ChannelHandlerContext ctx, ChannelStateEvent e)
@@ -65,12 +85,13 @@ public class FileServerHandler extends SimpleChannelUpstreamHandler {
 			}
 			HttpRequest request = this.request = (HttpRequest) e.getMessage();
 			URI uri = new URI(request.getUri());
-
+			//如果以form开头
 			if (!uri.getPath().startsWith("/form")) {
 				writeMenu(e);
 				return;
 			}
 			try {
+				//初始化decoder
 				this.decoder = new HttpPostRequestDecoder(factory, request);
 			} catch (HttpPostRequestDecoder.ErrorDataDecoderException e1) {
 				e1.printStackTrace();
@@ -87,14 +108,19 @@ public class FileServerHandler extends SimpleChannelUpstreamHandler {
 				return;
 			}
 
-			if (request.isChunked()) {
+			if (request.isChunked()) { //说明还没有请求完成，继续
 				this.readingChunks = true;
+				LOGGER.info("文件分块操作....");
 			} else {
+				LOGGER.info("文件大小小于1KB，文件接收完成，直接进行相应的文件处理操作....");
+				//请求完成，则接收请求参数，进行初始化请求参数
 				RequestParamParser.parseParams(this.decoder, this.requestParams);
-
-				String result = FileServerHandlerFactory
-						.process(this.requestParams);
+				//根据请求参数进行相应的文件操作
+				LOGGER.info("文件处理开始....requestParams参数解析：{}",requestParams);
+				String result = FileServerHandlerFactory.process(this.requestParams);
+				LOGGER.info("文件处理结束....FileServerHandlerFactory处理结果：{}",result);
 				this.responseContent.append(result);
+				//给客户端响应信息
 				writeResponse(e.getChannel());
 
 				e.getFuture().addListener(ChannelFutureListener.CLOSE);
@@ -102,6 +128,8 @@ public class FileServerHandler extends SimpleChannelUpstreamHandler {
 		} else {
 			HttpChunk chunk = (HttpChunk) e.getMessage();
 			try {
+				//chunk.getContent().capacity();
+				LOGGER.info("文件分块操作....文件大小：{} bytes",chunk.getContent().capacity());
 				this.decoder.offer(chunk);
 			} catch (HttpPostRequestDecoder.ErrorDataDecoderException e1) {
 				e1.printStackTrace();
@@ -112,17 +140,21 @@ public class FileServerHandler extends SimpleChannelUpstreamHandler {
 			}
 
 			if (chunk.isLast()) {
+				//文件末尾
 				this.readingChunks = false;
-
+				LOGGER.info("到达文件内容的末尾，进行相应的文件处理操作....start");
 				RequestParamParser.parseParams(this.decoder, this.requestParams);
-
-				String result = FileServerHandlerFactory
-						.process(this.requestParams);
+				
+				LOGGER.info("文件处理开始....requestParams参数解析：{}",requestParams);
+				String result = FileServerHandlerFactory.process(this.requestParams);
+				LOGGER.info("文件处理结束....FileServerHandlerFactory处理结果：{}",result);
+				
 				this.responseContent.append(result);
-
+				//给客户端响应信息
 				writeResponse(e.getChannel());
 
 				e.getFuture().addListener(ChannelFutureListener.CLOSE);
+				LOGGER.info("到达文件内容的末尾，进行相应的文件处理操作....end");
 			}
 		}
 	}

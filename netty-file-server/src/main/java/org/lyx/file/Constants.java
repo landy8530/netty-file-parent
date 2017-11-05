@@ -1,5 +1,17 @@
 package org.lyx.file;
-
+/**
+ * 
+ *<pre><b><font color="blue">Constants</font></b></pre>
+ *
+ *<pre><b>常量类</b></pre>
+ * <pre></pre>
+ * <pre>
+ * <b>--样例--</b>
+ *   Constants obj = new Constants();
+ *   obj.method();
+ * </pre>
+ * @author  <b>landyChris</b>
+ */
 public abstract class Constants {
 	public static final String BACKSLASH = "/";
 	public static final String USER_NAME_KEY = "userName";

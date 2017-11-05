@@ -1,5 +1,5 @@
 /**
- * 版权所有：福建邮科电信业务部厦门研发中心 
+ * 版权所有：蚂蚁与咖啡的故事
  *====================================================
  * 文件名称: UploadClient.java
  * 修订记录：
@@ -17,8 +17,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.Executors;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
@@ -35,9 +33,25 @@ import org.lyx.file.client.handler.ReplaceFileClientHandler;
 import org.lyx.file.client.handler.UploadFileClientHandler;
 import org.lyx.file.client.handler.WrapFileClientHandler;
 import org.lyx.file.client.support.FileClientPipelineFactory;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+/**
+ * 
+ *<pre><b><font color="blue">FileClient</font></b></pre>
+ *
+ *<pre><b>客户端对外暴露的API接口</b></pre>
+ * <pre></pre>
+ * <pre>
+ * <b>--样例--</b>
+ * 1.上传文件
+ * 2.替换文件
+ * 3.删除文件
+ * 4.生成缩略图
+ * </pre>
+ * @author  <b>landyChris</b>
+ */
 public class FileClient {
-	private static final Log logger = LogFactory.getLog(FileClient.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(FileClient.class);
 
 	private static URI getUri(String host, int port) {
 		String postUrl = "http://" + host + ":" + port + "/formpost";
@@ -45,7 +59,7 @@ public class FileClient {
 		try {
 			uri = new URI(postUrl);
 		} catch (URISyntaxException e) {
-			logger.error("Error: " + e.getMessage());
+			LOGGER.error("Error: " + e.getMessage());
 			return null;
 		}
 		return uri;
@@ -102,7 +116,14 @@ public class FileClient {
 		bootstrap.releaseExternalResources();
 		factory.cleanAllHttpDatas();
 	}
-
+	/**
+	 * 文件上传
+	 * @param file 需要上传的文件
+	 * @param fileName 文件名称
+	 * @param thumbMark 是否需要生成缩略图
+	 * @return
+	 * @author:landyChris
+	 */
 	public static String uploadFile(File file, String fileName,
 			boolean thumbMark) {
 		FileClientPipelineFactory clientPipelineFactory = new FileClientPipelineFactory();
@@ -149,7 +170,14 @@ public class FileClient {
 		bootstrap.releaseExternalResources();
 		factory.cleanAllHttpDatas();
 	}
-
+	/**
+	 * 文件删除
+	 * @param filePath 文件服务器存储的文件路径（相对路径）
+	 * @param userName
+	 * @param pwd
+	 * @return
+	 * @author:landyChris
+	 */
 	public static boolean deleteFile(String filePath, String userName,
 			String pwd) {
 		FileClientPipelineFactory clientPipelineFactory = new FileClientPipelineFactory();
@@ -162,7 +190,12 @@ public class FileClient {
 		}
 		return false;
 	}
-
+	/**
+	 * 文件删除
+	 * @param filePath 文件服务器存储的文件路径（相对路径）
+	 * @return
+	 * @author:landyChris
+	 */
 	public static boolean deleteFile(String filePath) {
 		return deleteFile(filePath, FileClientContainer.getUserName(),
 				FileClientContainer.getPassword());
@@ -195,7 +228,13 @@ public class FileClient {
 		bootstrap.releaseExternalResources();
 		factory.cleanAllHttpDatas();
 	}
-
+	/**
+	 * 替换文件
+	 * @param file 需要替换的文件
+	 * @param filePath 文件服务器存储的文件路径（相对路径）
+	 * @return
+	 * @author:landyChris
+	 */
 	public static boolean replaceFile(File file, String filePath) {
 		FileClientPipelineFactory clientPipelineFactory = new FileClientPipelineFactory();
 		ClientBootstrap bootstrap = createClientBootstrap(clientPipelineFactory);
@@ -238,7 +277,14 @@ public class FileClient {
 		bootstrap.releaseExternalResources();
 		factory.cleanAllHttpDatas();
 	}
-
+	/**
+	 * 生成缩略图
+	 * @param filePath 文件服务器存储的文件路径（相对路径）
+	 * @param userName
+	 * @param pwd
+	 * @return
+	 * @author:landyChris
+	 */
 	public static boolean createThumbPicture(String filePath, String userName,
 			String pwd) {
 		FileClientPipelineFactory clientPipelineFactory = new FileClientPipelineFactory();
@@ -251,7 +297,12 @@ public class FileClient {
 		}
 		return false;
 	}
-
+	/**
+	 * 生成缩略图
+	 * @param filePath 文件服务器存储的文件路径（相对路径）
+	 * @return
+	 * @author:landyChris
+	 */
 	public static boolean createThumbPicture(String filePath) {
 		return createThumbPicture(filePath,
 				FileClientContainer.getUserName(),

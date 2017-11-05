@@ -1,5 +1,5 @@
 /**
- * 版权所有：福建邮科电信业务部厦门研发中心 
+ * 版权所有：蚂蚁与咖啡的故事
  *====================================================
  * 文件名称: WrapFileClientHandler.java
  * 修订记录：
@@ -12,18 +12,18 @@
 package org.lyx.file.client.handler;
 
 import java.net.URI;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.jboss.netty.handler.codec.http.DefaultHttpRequest;
 import org.jboss.netty.handler.codec.http.HttpMethod;
 import org.jboss.netty.handler.codec.http.HttpRequest;
 import org.jboss.netty.handler.codec.http.HttpVersion;
 import org.jboss.netty.handler.codec.http.multipart.HttpDataFactory;
 import org.jboss.netty.handler.codec.http.multipart.HttpPostRequestEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class WrapFileClientHandler {
-	protected static final Log log = LogFactory
-			.getLog(WrapFileClientHandler.class);
+	protected static final Logger LOGGER = LoggerFactory.getLogger(WrapFileClientHandler.class);
 	private String host;
 	private URI uri;
 	private String userName;

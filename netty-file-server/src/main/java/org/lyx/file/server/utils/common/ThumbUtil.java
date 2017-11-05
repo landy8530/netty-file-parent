@@ -1,5 +1,5 @@
 /**
- * 版权所有：福建邮科电信业务部厦门研发中心 
+ * 版权所有：蚂蚁与咖啡的故事
  *====================================================
  * 文件名称: ThumbUtil.java
  * 修订记录：
@@ -25,7 +25,19 @@ import javax.imageio.ImageIO;
 import net.coobird.thumbnailator.Thumbnails;
 
 import org.lyx.file.Constants;
-
+/**
+ * 
+ *<pre><b><font color="blue">ThumbUtil</font></b></pre>
+ *
+ *<pre><b>缩略图工具类</b></pre>
+ * <pre></pre>
+ * <pre>
+ * <b>--样例--</b>
+ *   ThumbUtil obj = new ThumbUtil();
+ *   obj.method();
+ * </pre>
+ * @author  <b>landyChris</b>
+ */
 public class ThumbUtil {
 	private File inPutFile;
 	private File outPutFile;

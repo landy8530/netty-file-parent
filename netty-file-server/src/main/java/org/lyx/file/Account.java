@@ -1,5 +1,5 @@
 /**
- * 版权所有：福建邮科电信业务部厦门研发中心 
+ * 版权所有：蚂蚁与咖啡的故事
  *====================================================
  * 文件名称: Account.java
  * 修订记录：
@@ -14,7 +14,19 @@ package org.lyx.file;
 import java.io.File;
 
 import org.apache.commons.lang3.StringUtils;
-
+/**
+ * 
+ *<pre><b><font color="blue">Account</font></b></pre>
+ *
+ *<pre><b>文件服务器鉴权账户类</b></pre>
+ * <pre></pre>
+ * <pre>
+ * <b>--样例--</b>
+ *   Account obj = new Account();
+ *   obj.method();
+ * </pre>
+ * @author  <b>landyChris</b>
+ */
 public class Account {
 	private String userName;
 	private String pwd;

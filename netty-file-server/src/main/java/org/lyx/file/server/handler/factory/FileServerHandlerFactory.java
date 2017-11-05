@@ -1,5 +1,5 @@
 /**
- * 版权所有：福建邮科电信业务部厦门研发中心 
+ * 版权所有：蚂蚁与咖啡的故事
  *====================================================
  * 文件名称: FileHandlerFactory.java
  * 修订记录：
@@ -9,21 +9,32 @@
  * 类描述：(说明未实现或其它不应生成javadoc的内容)
  * 
  */
-package org.lyx.file.server.handler;
+package org.lyx.file.server.handler.factory;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.lyx.file.Account;
 import org.lyx.file.Result;
 import org.lyx.file.server.FileServerContainer;
+import org.lyx.file.server.handler.CreateThumbPictureServerHandler;
+import org.lyx.file.server.handler.DeleteFileServerHandler;
+import org.lyx.file.server.handler.ReplaceFileServerHandler;
+import org.lyx.file.server.handler.UploadFileServerHandler;
+import org.lyx.file.server.handler.processor.FileServerProcessor;
 import org.lyx.file.server.parse.RequestParam;
 import org.lyx.file.server.utils.common.JSONUtil;
 import org.lyx.file.server.utils.enumobj.EnumFileAction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FileServerHandlerFactory {
-	private static Log log = LogFactory.getLog(FileServerHandlerFactory.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(FileServerHandlerFactory.class);
 
+	/**
+	 * 根据请求的不同参数，进行相应的文件处理操作
+	 * @param requestParams
+	 * @return
+	 * @author:landyChris
+	 */
 	public static String process(RequestParam requestParams) {
 		Account account = FileServerContainer.getInstance().getAccount(
 				requestParams.getUserName());
@@ -31,22 +42,26 @@ public class FileServerHandlerFactory {
 				.getAction());
 		Result result = null;
 		if (account.auth(requestParams.getPwd())) {
-			FileServerHandler handler = null;
+			FileServerProcessor handler = null;
 			if (EnumFileAction.UPLOAD_FILE == action) {//上传文件
 				if (requestParams.getFileUpload() != null) {
+					LOGGER.info("进行文件上传操作....");
 					handler = new UploadFileServerHandler(account);
 				}
 			} else if (EnumFileAction.DELETE_FILE == action) {//删除文件
 				if (StringUtils.isNotBlank(requestParams.getFilePath())) {
+					LOGGER.info("进行文件删除操作....");
 					handler = new DeleteFileServerHandler(account);
 				}
 			} else if (EnumFileAction.REPLACE_FILE == action) {//替换文件
 				if ((requestParams.getFileUpload() != null)
 						&& (StringUtils.isNotBlank(requestParams.getFilePath()))) {
+					LOGGER.info("进行文件替换操作....");
 					handler = new ReplaceFileServerHandler(account);
 				}
 			} else if ((EnumFileAction.CREATE_THUMB_PICTURE == action)
 					&& (StringUtils.isNotBlank(requestParams.getFilePath()))) {//生成缩略图
+				LOGGER.info("进行生成缩略图操作....");
 				handler = new CreateThumbPictureServerHandler(account);
 			}
 			if(handler != null) {
@@ -66,8 +81,8 @@ public class FileServerHandlerFactory {
 		}
 
 		String json = JSONUtil.toJSONString(result);
-		if (log.isDebugEnabled()) {
-			log.debug("执行结果:" + json);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("执行结果:" + json);
 		}
 		return json;
 	}

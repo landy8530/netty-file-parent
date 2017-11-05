@@ -1,5 +1,5 @@
 /**
- * 版权所有：福建邮科电信业务部厦门研发中心 
+ * 版权所有：蚂蚁与咖啡的故事
  *====================================================
  * 文件名称: ReplaceFileHandler.java
  * 修订记录：
@@ -14,16 +14,30 @@ package org.lyx.file.server.handler;
 import java.io.File;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.lyx.file.Account;
 import org.lyx.file.Result;
+import org.lyx.file.server.handler.processor.AbstractFileServerHandler;
+import org.lyx.file.server.handler.processor.FileServerProcessor;
 import org.lyx.file.server.parse.RequestParam;
 import org.lyx.file.server.utils.common.ThumbUtil;
 import org.lyx.file.server.utils.enumobj.EnumFileAction;
-
-public class ReplaceFileServerHandler extends AbstractFileServerHandler implements FileServerHandler {
-	private static final Log log = LogFactory.getLog(ReplaceFileServerHandler.class);
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+/**
+ * 
+ *<pre><b><font color="blue">ReplaceFileServerHandler</font></b></pre>
+ *
+ *<pre><b>替换文件操作</b></pre>
+ * <pre></pre>
+ * <pre>
+ * <b>--样例--</b>
+ *   ReplaceFileServerHandler obj = new ReplaceFileServerHandler();
+ *   obj.method();
+ * </pre>
+ * @author  <b>landyChris</b>
+ */
+public class ReplaceFileServerHandler extends AbstractFileServerHandler implements FileServerProcessor {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ReplaceFileServerHandler.class);
 
 	public ReplaceFileServerHandler(Account account) {
 		super(account);
@@ -39,13 +53,13 @@ public class ReplaceFileServerHandler extends AbstractFileServerHandler implemen
 			String realPath = getRealPath(reqParams.getFilePath());
 			
 			
-			log.info("进行替换文件：" + realPath);
+			LOGGER.info("进行替换文件：" + realPath);
 			File oldFile = new File(realPath);
 			if ((oldFile.exists()) && (oldFile.isFile())) {
 				oldFile.delete();
 			} else {
 				result.setMsg("替换的文件不存在");
-				log.info("替换的文件不存在：" + realPath);
+				LOGGER.info("替换的文件不存在：" + realPath);
 				return result;
 			}
 
@@ -61,10 +75,10 @@ public class ReplaceFileServerHandler extends AbstractFileServerHandler implemen
 				boolean bool = reqParams.getFileUpload().renameTo(oldFile);
 				result.setCode(bool);
 				result.setMsg("文件替换上传成功");
-				log.info("文件替换上传成功");
+				LOGGER.info("文件替换上传成功");
 				result.setFilePath(reqParams.getFilePath());
 				if ((bool) && (thumbBool)) {
-					log.info("生成缩略图");
+					LOGGER.info("生成缩略图");
 					
 					new ThumbUtil(oldFile, thumbFile, this.account.getThumbWidth(),
 							this.account.getThumbHeight()).createThumbImage();
@@ -76,7 +90,7 @@ public class ReplaceFileServerHandler extends AbstractFileServerHandler implemen
 				e.printStackTrace();
 				result.setCode(false);
 				result.setMsg("文件替换报错" + e + ",acount:" + this.account);
-				log.error("文件替换报错" + e + ",acount:" + this.account);
+				LOGGER.error("文件替换报错" + e + ",acount:" + this.account);
 			}
 		}
 		return result;

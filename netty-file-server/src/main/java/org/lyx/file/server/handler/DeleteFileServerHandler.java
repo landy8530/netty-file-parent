@@ -1,5 +1,5 @@
 /**
- * 版权所有：福建邮科电信业务部厦门研发中心 
+ * 版权所有：蚂蚁与咖啡的故事
  *====================================================
  * 文件名称: DeleteFileHandler.java
  * 修订记录：
@@ -14,16 +14,30 @@ package org.lyx.file.server.handler;
 import java.io.File;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.lyx.file.Account;
 import org.lyx.file.Constants;
 import org.lyx.file.Result;
+import org.lyx.file.server.handler.processor.AbstractFileServerHandler;
+import org.lyx.file.server.handler.processor.FileServerProcessor;
 import org.lyx.file.server.parse.RequestParam;
 import org.lyx.file.server.utils.enumobj.EnumFileAction;
-
-public class DeleteFileServerHandler extends AbstractFileServerHandler implements FileServerHandler {
-	private static final Log log = LogFactory.getLog(DeleteFileServerHandler.class);
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+/**
+ * 
+ *<pre><b><font color="blue">DeleteFileServerHandler</font></b></pre>
+ *
+ *<pre><b>删除文件操作</b></pre>
+ * <pre></pre>
+ * <pre>
+ * <b>--样例--</b>
+ *   DeleteFileServerHandler obj = new DeleteFileServerHandler();
+ *   obj.method();
+ * </pre>
+ * @author  <b>landyChris</b>
+ */
+public class DeleteFileServerHandler extends AbstractFileServerHandler implements FileServerProcessor {
+	private static final Logger LOGGER = LoggerFactory.getLogger(DeleteFileServerHandler.class);
 
 	public DeleteFileServerHandler(Account account) {
 		super(account);
@@ -36,8 +50,8 @@ public class DeleteFileServerHandler extends AbstractFileServerHandler implement
 
 		if (StringUtils.isNotBlank(reqParams.getFilePath())) {
 			String realPath = getRealPath(reqParams.getFilePath());
-			if (log.isDebugEnabled()) {
-				log.debug("进行删除文件：" + realPath);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("进行删除文件：" + realPath);
 			}
 			File file = new File(realPath);
 

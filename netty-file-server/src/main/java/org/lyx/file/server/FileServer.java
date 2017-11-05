@@ -1,7 +1,7 @@
 /**
- * 版权所有：福建邮科电信业务部厦门研发中心 
+ * 版权所有：蚂蚁与咖啡的故事
  *====================================================
- * 文件名称: UploadServer.java
+ * 文件名称: FileServer.java
  * 修订记录：
  * No    日期				作者(操作:具体内容)
  * 1.    2013-4-15			liuyuanxian(创建:创建文件)
@@ -17,7 +17,19 @@ import java.util.concurrent.Executors;
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.lyx.file.server.support.FileServerPipelineFactory;
-
+/**
+ * 
+ *<pre><b><font color="blue">FileServer</font></b></pre>
+ *
+ *<pre><b>文件服务器netty启动类</b></pre>
+ * <pre></pre>
+ * <pre>
+ * <b>--样例--</b>
+ *   FileServer obj = new FileServer();
+ *   obj.method();
+ * </pre>
+ * @author  <b>landyChris</b>
+ */
 public class FileServer {
 	private void run() {
 		ServerBootstrap bootstrap = new ServerBootstrap(

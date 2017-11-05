@@ -1,5 +1,5 @@
 /**
- * 版权所有：福建邮科电信业务部厦门研发中心 
+ * 版权所有：蚂蚁与咖啡的故事
  *====================================================
  * 文件名称: CreateThumbPictureClientHandler.java
  * 修订记录：
@@ -17,7 +17,19 @@ import org.jboss.netty.handler.codec.http.multipart.HttpDataFactory;
 import org.jboss.netty.handler.codec.http.multipart.HttpPostRequestEncoder;
 import org.lyx.file.Constants;
 import org.lyx.file.client.utils.enumobj.EnumUploadAction;
-
+/**
+ * 
+ *<pre><b><font color="blue">CreateThumbPictureClientHandler</font></b></pre>
+ *
+ *<pre><b>客户端生成缩略图处理器</b></pre>
+ * <pre></pre>
+ * <pre>
+ * <b>--样例--</b>
+ *   CreateThumbPictureClientHandler obj = new CreateThumbPictureClientHandler();
+ *   obj.method();
+ * </pre>
+ * @author  <b>landyChris</b>
+ */
 public class CreateThumbPictureClientHandler extends WrapFileClientHandler {
 	private String filePath;
 

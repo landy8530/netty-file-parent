@@ -1,14 +1,3 @@
-/**
- * 版权所有：福建邮科电信业务部厦门研发中心 
- *====================================================
- * 文件名称: UploadServerContainer.java
- * 修订记录：
- * No    日期				作者(操作:具体内容)
- * 1.    2013-4-15			liuyuanxian(创建:创建文件)
- *====================================================
- * 类描述：(说明未实现或其它不应生成javadoc的内容)
- * 
- */
 package org.lyx.file.server;
 
 import java.util.ArrayList;
@@ -21,11 +10,28 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.lyx.file.Account;
 import org.lyx.file.Constants;
-
+/**
+ * 
+ *<pre><b><font color="blue">FileServerContainer</font></b></pre>
+ *
+ *<pre><b>文件服务器基本信息容器</b></pre>
+ * <pre></pre>
+ * <pre>
+ * <b>--样例--</b>
+ *   FileServerContainer obj = new FileServerContainer();
+ *   obj.method();
+ * </pre>
+ * @author  <b>landyChris</b>
+ */
 public class FileServerContainer {
 	private static Log log = LogFactory.getLog(FileServerContainer.class);
-
+	/**
+	 * 文件服务器上传鉴权账户列表
+	 */
 	private List<Account> accounts = new ArrayList<Account>();
+	/**
+	 * 文件上传的根目录
+	 */
 	private String fileBaseDirectory;
 	private int port;
 	private static FileServerContainer instance;
