@@ -111,14 +111,10 @@ org.lyx.file.client包是该组件的核心包，FileClient类是对外提供接
 
 org.lyx.file.server包是该组件的核心包。具体的处理句柄类有以下几个：
 
-1.文件上传：UploadFileServerHandler
-
-2.删除文件：DeleteFileServerHandler
-
-3.替换文件：ReplaceFileServerHandler
-
-4.生成缩略图：CreateThumbPictureServerHandler
-
+1. 文件上传：UploadFileServerHandler
+2. 删除文件：DeleteFileServerHandler
+3. 替换文件：ReplaceFileServerHandler
+4. 生成缩略图：CreateThumbPictureServerHandler
 
 以上所以句柄类的接口均为FileServerProcessor，并且继承了抽象类AbstractFileServerHandler。
 
@@ -147,7 +143,6 @@ private RequestParam requestParams = new RequestParam();
 
 以上操作主要有两个注意点：
 
-1.请求参数的解析工作（根据HttpDataType进行相应参数的赋值操作）
-
-2.根据解析的参数进行相应的文件处理操作（根据文件操作类型，选择相应的处理句柄进行文件处理）
+1. 请求参数的解析工作（根据HttpDataType进行相应参数的赋值操作）
+2. 根据解析的参数进行相应的文件处理操作（根据文件操作类型，选择相应的处理句柄进行文件处理）
 
